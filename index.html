@@ -5,61 +5,104 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Generador de Sensibilidades - @SKILLZ_FFF</title>
 <style>
-    body {margin:0; font-family: Arial, sans-serif; background:#0a0a0a; color:#fff;}
-    .container {max-width:900px; margin:20px auto; padding:20px; background:#1a1a1a; border-radius:12px; box-shadow: 0 0 20px #ff2e2e;}
-    h1, h2 {text-align:center; margin:10px 0;}
-    label {display:block; margin:10px 0 5px;}
-    select, input[type="text"], button {width:100%; padding:10px; margin:5px 0 15px; border:none; border-radius:8px; background:#222; color:#fff;}
-    button {cursor:pointer; background:#ff2e2e; box-shadow:0 0 8px #ff2e2e;}
-    button:hover {background:#ff1a1a; box-shadow:0 0 15px #ff2e2e;}
-    .footer{text-align:center; margin-top:20px; font-size:14px;}
-    .footer a{color:#ff2e2e; text-decoration:none;}
-    .footer a:hover{text-decoration:underline;}
+/* General */
+body {
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#0a0a0a;
+    color:#fff;
+    overflow-x: hidden;
+    position: relative;
+}
+.container {
+    max-width:900px;
+    margin:20px auto;
+    padding:20px;
+    background:#1a1a1a;
+    border-radius:12px;
+    box-shadow:0 0 20px #ff2e2e;
+    position: relative;
+    z-index:1;
+}
+h1,h2{text-align:center;margin:10px 0;}
+label{display:block;margin:10px 0 5px;}
+select,input[type="text"],button{width:100%;padding:10px;margin:5px 0 15px;border:none;border-radius:8px;background:#222;color:#fff;}
+button{cursor:pointer;background:#ff2e2e;box-shadow:0 0 8px #ff2e2e;}
+button:hover{background:#ff1a1a;box-shadow:0 0 15px #ff2e2e;}
+.footer{text-align:center;margin-top:20px;font-size:14px;}
+.footer a{color:#ff2e2e;text-decoration:none;}
+.footer a:hover{text-decoration:underline;}
 
-    /* Logo y perfil */
-    .profile-logo-container {display:flex; align-items:center; justify-content:center; gap:20px; margin-bottom:20px;}
-    .logo {width:120px; height:120px; border-radius:12px; box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e; animation: glow 2s infinite alternate;}
-    .profile-header {text-align:center;}
-    .profile-pic {width:120px; height:120px; border-radius:50%; border:3px solid #ff2e2e; box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e; animation: glow 2s infinite alternate;}
-    .profile-name {color:#ff2e2e; text-transform:uppercase; margin-top:10px; font-size:22px; letter-spacing:2px; text-shadow:0 0 5px #ff2e2e,0 0 10px #ff2e2e;}
+/* Foto de perfil */
+.profile-header{text-align:center;margin-bottom:20px;}
+.profile-pic{width:120px;height:120px;border-radius:50%;border:3px solid #ff2e2e;box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;animation: glow 2s infinite alternate;}
+.profile-name{color:#ff2e2e;text-transform:uppercase;margin-top:10px;font-size:22px;letter-spacing:2px;text-shadow:0 0 5px #ff2e2e,0 0 10px #ff2e2e;}
 
-    /* Animaciones */
-    @keyframes glow {
-        0% {box-shadow:0 0 5px #ff2e2e;}
-        50% {box-shadow:0 0 20px #ff2e2e,0 0 40px #ff2e2e;}
-        100% {box-shadow:0 0 5px #ff2e2e;}
-    }
-    @keyframes rowGlow {
-        0% {background-color:#1a1a1a;}
-        50% {background-color:#2b0a0a;}
-        100% {background-color:#1a1a1a;}
-    }
+/* Animaciones */
+@keyframes glow {
+    0% {box-shadow:0 0 5px #ff2e2e;}
+    50% {box-shadow:0 0 20px #ff2e2e,0 0 40px #ff2e2e;}
+    100% {box-shadow:0 0 5px #ff2e2e;}
+}
+@keyframes rowGlow {
+    0% {background-color:#1a1a1a;}
+    50% {background-color:#2b0a0a;}
+    100% {background-color:#1a1a1a;}
+}
 
-    /* Tabla compacta LED */
-    table {width:100%; border-collapse:collapse; margin-top:15px; font-size:14px;}
-    th, td {padding:6px 8px; text-align:center; font-weight:bold;}
-    th {background:#222; color:#ff2e2e; border-bottom:1px solid #ff2e2e;}
-    tr {background:#1a1a1a; transition: all 0.2s ease; height:35px; animation: rowGlow 3s infinite alternate;}
-    tr:hover {box-shadow:0 0 8px #ff2e2e; transform: scale(1.01);}
+/* Tabla compacta LED */
+table {width:100%; border-collapse:collapse; margin-top:15px; font-size:14px; position:relative;}
+th, td {padding:6px 8px; text-align:center; font-weight:bold;}
+th {background:#222; color:#ff2e2e; border-bottom:1px solid #ff2e2e;}
+tr {background:#1a1a1a; transition: all 0.2s ease; height:35px; animation: rowGlow 3s infinite alternate;}
+tr:hover {box-shadow:0 0 8px #ff2e2e; transform: scale(1.01);}
 
-    /* Barra de carga */
-    #progressContainer {width:100%; background:#111; border-radius:8px; margin-top:10px; display:none;}
-    #progressBar {width:0%; height:12px; background:linear-gradient(90deg, #ff2e2e, #ff6666); border-radius:8px; box-shadow:0 0 10px #ff2e2e,0 0 20px #ff2e2e; transition: width 0.2s;}
+/* Barra de carga */
+#progressContainer {width:100%; background:#111; border-radius:8px; margin-top:10px; display:none;}
+#progressBar {width:0%; height:12px; background:linear-gradient(90deg, #ff2e2e, #ff6666); border-radius:8px; box-shadow:0 0 10px #ff2e2e,0 0 20px #ff2e2e; transition: width 0.2s;}
 
-    /* Botón WhatsApp con glow */
-    .whatsapp-btn {background:#25D366; color:#fff; box-shadow:0 0 10px #25D366,0 0 20px #25D366; border:none; border-radius:8px; padding:10px 15px; cursor:pointer; margin-top:15px; animation: glow 2.5s infinite alternate;}
-    .whatsapp-btn:hover {background:#1ebe57; box-shadow:0 0 15px #25D366,0 0 30px #25D366;}
+/* Botón WhatsApp */
+.whatsapp-btn {background:#25D366; color:#fff; box-shadow:0 0 10px #25D366,0 0 20px #25D366; border:none; border-radius:8px; padding:10px 15px; cursor:pointer; margin-top:15px; animation: glow 2.5s infinite alternate;}
+.whatsapp-btn:hover {background:#1ebe57; box-shadow:0 0 15px #25D366,0 0 30px #25D366;}
+
+/* Fondo animado tipo cyber */
+body::before {
+    content: '';
+    position: fixed;
+    top:0; left:0;
+    width:200%; height:200%;
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255,46,46,0.05) 0px,
+        rgba(255,46,46,0.05) 2px,
+        transparent 2px,
+        transparent 20px
+    );
+    animation: moveBg 20s linear infinite;
+    z-index:-1;
+}
+@keyframes moveBg {
+    0% {transform: translate(0,0);}
+    100% {transform: translate(-50%, -50%);}
+}
+
+/* Overlay suave sobre tabla */
+#sensiTable::after {
+    content:'';
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: radial-gradient(circle, rgba(255,46,46,0.05) 0%, transparent 70%);
+    pointer-events:none;
+}
 </style>
 </head>
 <body>
 <div class="container">
-    <!-- Logo y perfil -->
-    <div class="profile-logo-container">
-        <img src="URL_DE_TU_LOGO.png" alt="Logo Skillz" class="logo">
-        <div class="profile-header">
-            <img src="URL_DE_TU_FOTO.png" alt="@SKILLZ_FFF" class="profile-pic">
-            <h2 class="profile-name">@SKILLZ_FFF</h2>
-        </div>
+    <!-- Foto de perfil -->
+    <div class="profile-header">
+        <img src="URL_DE_TU_FOTO.png" alt="@SKILLZ_FFF" class="profile-pic">
+        <h2 class="profile-name">@SKILLZ_FFF</h2>
     </div>
 
     <h1>Generador de Sensibilidades</h1>
@@ -106,7 +149,6 @@
     <table id="sensiTable">
         <thead>
             <tr>
-                <th>Preset</th>
                 <th>Camera</th>
                 <th>General</th>
                 <th>Red Dot</th>
@@ -120,7 +162,7 @@
 
     <!-- Botón WhatsApp -->
     <div style="text-align:center;">
-        <a href="TU_LINK_DE_WHATSAPP" target="_blank">
+        <a href="https://chat.whatsapp.com/CedipCOm7xrKWLgggLhAfB" target="_blank">
             <button class="whatsapp-btn">Únete a nuestro grupo de WhatsApp</button>
         </a>
     </div>
@@ -131,71 +173,70 @@
 </div>
 
 <script>
-    const modelsByBrand = {
-        Xiaomi:["Redmi Note 10","Mi 11","Mi 10T"],
-        Huawei:["P40","Mate 40","Nova 8"],
-        Samsung:["Galaxy S21","Galaxy A52","Galaxy Note 20"],
-        Tecno:["Camon 17","Spark 5"],
-        ZTE:["Axon 10","Blade V10"],
-        Motorola:["Moto G Power","Moto E"],
-        Redmi:["Redmi Note 9","Redmi 9A"],
-        iPhone:["iPhone 12","iPhone 13"]
-    };
-    const brandSelect = document.getElementById("brand");
-    const modelSelect = document.getElementById("model");
-    const tbody = document.querySelector("#sensiTable tbody");
-    const progressContainer = document.getElementById("progressContainer");
-    const progressBar = document.getElementById("progressBar");
+const modelsByBrand = {
+    Xiaomi:["Redmi Note 8","Redmi Note 9","Redmi Note 10","Redmi Note 11","Mi 10T","Mi 11","Mi 12"],
+    Huawei:["P30","P40","P50","Mate 30","Mate 40","Nova 7","Nova 8","Nova 9"],
+    Samsung:["Galaxy S20","Galaxy S21","Galaxy S22","Galaxy A12","Galaxy A32","Galaxy A52","Galaxy Note 20"],
+    Tecno:["Camon 16","Camon 17","Spark 4","Spark 5","Spark 6","Spark 7"],
+    ZTE:["Axon 10","Axon 20","Blade V10","Blade V11"],
+    Motorola:["Moto G Power","Moto G Stylus","Moto E6","Moto E7"],
+    Redmi:["Redmi Note 8","Redmi Note 9","Redmi Note 10","Redmi 9A","Redmi 9C"],
+    iPhone:["iPhone 11","iPhone 12","iPhone 13","iPhone 14"]
+};
+const brandSelect = document.getElementById("brand");
+const modelSelect = document.getElementById("model");
+const tbody = document.querySelector("#sensiTable tbody");
+const progressContainer = document.getElementById("progressContainer");
+const progressBar = document.getElementById("progressBar");
 
-    function updateModels(){
-        const brand = brandSelect.value;
-        modelSelect.innerHTML="";
-        modelsByBrand[brand].forEach(m=>{
-            const option = document.createElement("option");
-            option.value=m; option.textContent=m;
-            modelSelect.appendChild(option);
-        });
-    }
-    brandSelect.addEventListener("change",updateModels);
-    updateModels();
+function updateModels(){
+    const brand = brandSelect.value;
+    modelSelect.innerHTML="";
+    modelsByBrand[brand].forEach(m=>{
+        const option = document.createElement("option");
+        option.value=m; option.textContent=m;
+        modelSelect.appendChild(option);
+    });
+}
+brandSelect.addEventListener("change",updateModels);
+updateModels();
 
-    function jitter(base){ return Math.min(200, Math.max(50, Math.round(base + Math.random()*5 - 2))); }
+function jitter(base){ return Math.min(200, Math.max(50, Math.round(base + Math.random()*5 - 2))); }
 
-    function generateSensitivity(){
-        const dpi = document.getElementById("dpi").value;
-        const sensiType = document.getElementById("sensitivity").value;
+function generateSensitivity(){
+    const dpi = document.getElementById("dpi").value;
+    const sensiType = document.getElementById("sensitivity").value;
 
-        tbody.innerHTML = "";
-        progressContainer.style.display = "block";
-        progressBar.style.width = "0%";
-        let width = 0;
-        const interval = setInterval(() => {
-            if(width >= 100){
-                clearInterval(interval);
-                progressContainer.style.display = "none";
+    tbody.innerHTML = "";
+    progressContainer.style.display = "block";
+    progressBar.style.width = "0%";
+    let width = 0;
+    const interval = setInterval(() => {
+        if(width >= 100){
+            clearInterval(interval);
+            progressContainer.style.display = "none";
 
-                let base = {camera:90,general:100,red:85,scope:80,sniper:75};
-                if(sensiType==="Alta"){ for(let k in base) base[k]+=20; }
-                else if(sensiType==="Baja"){ for(let k in base) base[k]-=20; }
+            let base = {camera:90,general:100,red:85,scope:80,sniper:75};
+            if(sensiType==="Alta"){ for(let k in base) base[k]+=20; }
+            else if(sensiType==="Baja"){ for(let k in base) base[k]-=20; }
 
-                const tr = document.createElement("tr");
-                tr.innerHTML=`
-                    <td>Preset 1</td>
-                    <td>${jitter(base.camera)}</td>
-                    <td>${jitter(base.general)}</td>
-                    <td>${jitter(base.red)}</td>
-                    <td>${jitter(base.scope)}</td>
-                    <td>${jitter(base.sniper)}</td>
-                    <td>${dpi}</td>
-                `;
-                tbody.appendChild(tr);
-                tr.scrollIntoView({behavior:"smooth"});
-            } else {
-                width += 2;
-                progressBar.style.width = width + "%";
-            }
-        }, 20);
-    }
+            const tr = document.createElement("tr");
+            tr.innerHTML=`
+                <td>${jitter(base.camera)}</td>
+                <td>${jitter(base.general)}</td>
+                <td>${jitter(base.red)}</td>
+                <td>${jitter(base.scope)}</td>
+                <td>${jitter(base.sniper)}</td>
+                <td>${dpi}</td>
+            `;
+            tbody.appendChild(tr);
+            tr.scrollIntoView({behavior:"smooth"});
+        } else {
+            width += 2;
+            progressBar.style.width = width + "%";
+        }
+    }, 20);
+}
 </script>
 </body>
 </html>
