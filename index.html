@@ -12,40 +12,54 @@
     select, input[type="text"], button {width:100%; padding:10px; margin:5px 0 15px; border:none; border-radius:8px; background:#222; color:#fff;}
     button {cursor:pointer; background:#ff2e2e; box-shadow:0 0 8px #ff2e2e;}
     button:hover {background:#ff1a1a; box-shadow:0 0 15px #ff2e2e;}
-    .output{background:#111; padding:15px; border-radius:8px; white-space:pre-wrap; min-height:150px; margin-top:15px;}
     .footer{text-align:center; margin-top:20px; font-size:14px;}
     .footer a{color:#ff2e2e; text-decoration:none;}
     .footer a:hover{text-decoration:underline;}
-    /* Profile */
-    .profile-header {text-align:center; margin-bottom:20px; animation: fadeIn 1s ease-in-out;}
-    .profile-pic {width:120px; height:120px; border-radius:50%; border:3px solid #ff2e2e; box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;}
+
+    /* Logo y perfil */
+    .profile-logo-container {display:flex; align-items:center; justify-content:center; gap:20px; margin-bottom:20px;}
+    .logo {width:120px; height:120px; border-radius:12px; box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e; animation: glow 2s infinite alternate;}
+    .profile-header {text-align:center;}
+    .profile-pic {width:120px; height:120px; border-radius:50%; border:3px solid #ff2e2e; box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e; animation: glow 2s infinite alternate;}
     .profile-name {color:#ff2e2e; text-transform:uppercase; margin-top:10px; font-size:22px; letter-spacing:2px; text-shadow:0 0 5px #ff2e2e,0 0 10px #ff2e2e;}
-    @keyframes fadeIn {0% {opacity:0;} 100% {opacity:1;}}
-    /* Tabla moderna */
-    table {width:100%; border-collapse:collapse; margin-top:15px;}
-    th, td {padding:12px; text-align:center;}
-    th {background:#222; color:#ff2e2e; border-bottom:2px solid #ff2e2e;}
-    tr {background:#1a1a1a; transition: all 0.3s ease;}
-    tr:hover {box-shadow:0 0 10px #ff2e2e; transform: scale(1.02);}
-    /* AUXILIO */
-    .auxilio{background:#111; padding:15px; border-radius:8px; margin-top:20px;}
-    .switch-group{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;}
-    .switch{display:flex; align-items:center; gap:6px; cursor:pointer;}
-    .switch input{cursor:pointer;}
-    /* Modal */
-    #modal{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); justify-content:center; align-items:center; z-index:999;}
-    #modalContent{background:#1a1a1a; padding:30px; border-radius:12px; text-align:center; box-shadow:0 0 20px #ff2e2e;}
-    #modalContent img{width:150px; height:150px; border-radius:50%; box-shadow:0 0 15px #ff2e2e;}
-    #modalContent h2{color:#ff2e2e; margin:0; font-size:28px; text-shadow:0 0 5px #ff2e2e,0 0 10px #ff2e2e; animation: glow 1.5s infinite alternate;}
-    @keyframes glow {0% {text-shadow:0 0 5px #ff2e2e,0 0 10px #ff2e2e;} 100% {text-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;}}
+
+    /* Animaciones */
+    @keyframes glow {
+        0% {box-shadow:0 0 5px #ff2e2e;}
+        50% {box-shadow:0 0 20px #ff2e2e,0 0 40px #ff2e2e;}
+        100% {box-shadow:0 0 5px #ff2e2e;}
+    }
+    @keyframes rowGlow {
+        0% {background-color:#1a1a1a;}
+        50% {background-color:#2b0a0a;}
+        100% {background-color:#1a1a1a;}
+    }
+
+    /* Tabla compacta LED */
+    table {width:100%; border-collapse:collapse; margin-top:15px; font-size:14px;}
+    th, td {padding:6px 8px; text-align:center; font-weight:bold;}
+    th {background:#222; color:#ff2e2e; border-bottom:1px solid #ff2e2e;}
+    tr {background:#1a1a1a; transition: all 0.2s ease; height:35px; animation: rowGlow 3s infinite alternate;}
+    tr:hover {box-shadow:0 0 8px #ff2e2e; transform: scale(1.01);}
+
+    /* Barra de carga */
+    #progressContainer {width:100%; background:#111; border-radius:8px; margin-top:10px; display:none;}
+    #progressBar {width:0%; height:12px; background:linear-gradient(90deg, #ff2e2e, #ff6666); border-radius:8px; box-shadow:0 0 10px #ff2e2e,0 0 20px #ff2e2e; transition: width 0.2s;}
+
+    /* Botón WhatsApp con glow */
+    .whatsapp-btn {background:#25D366; color:#fff; box-shadow:0 0 10px #25D366,0 0 20px #25D366; border:none; border-radius:8px; padding:10px 15px; cursor:pointer; margin-top:15px; animation: glow 2.5s infinite alternate;}
+    .whatsapp-btn:hover {background:#1ebe57; box-shadow:0 0 15px #25D366,0 0 30px #25D366;}
 </style>
 </head>
 <body>
 <div class="container">
-    <!-- Foto de perfil y nombre -->
-    <div class="profile-header">
-        <img src="URL_DE_TU_FOTO.png" alt="@SKILLZ_FFF" class="profile-pic">
-        <h2 class="profile-name">@SKILLZ_FFF</h2>
+    <!-- Logo y perfil -->
+    <div class="profile-logo-container">
+        <img src="URL_DE_TU_LOGO.png" alt="Logo Skillz" class="logo">
+        <div class="profile-header">
+            <img src="URL_DE_TU_FOTO.png" alt="@SKILLZ_FFF" class="profile-pic">
+            <h2 class="profile-name">@SKILLZ_FFF</h2>
+        </div>
     </div>
 
     <h1>Generador de Sensibilidades</h1>
@@ -83,6 +97,11 @@
 
     <button onclick="generateSensitivity()">GENERAR SENSIBILIDAD</button>
 
+    <!-- Barra de carga -->
+    <div id="progressContainer">
+        <div id="progressBar"></div>
+    </div>
+
     <!-- Tabla de sensibilidades -->
     <table id="sensiTable">
         <thead>
@@ -99,27 +118,15 @@
         <tbody></tbody>
     </table>
 
-    <!-- AUXILIO -->
-    <div class="auxilio">
-        <h3>AUXILIO</h3>
-        <div class="switch-group">
-            <label class="switch"><input type="checkbox" id="reduceLag"> Reducir lag</label>
-            <label class="switch"><input type="checkbox" id="increasePrecision"> Aumentar precisión</label>
-            <label class="switch"><input type="checkbox" id="inject"> Injertar</label>
-        </div>
-        <button onclick="applyAuxilio()">Aplicar</button>
+    <!-- Botón WhatsApp -->
+    <div style="text-align:center;">
+        <a href="TU_LINK_DE_WHATSAPP" target="_blank">
+            <button class="whatsapp-btn">Únete a nuestro grupo de WhatsApp</button>
+        </a>
     </div>
 
     <div class="footer">
         Hecho con ❤️ por <a href="https://www.tiktok.com/@skillz_fff" target="_blank">@SKILLZ_FFF</a>
-    </div>
-</div>
-
-<!-- Modal de confirmación -->
-<div id="modal">
-    <div id="modalContent">
-        <img src="URL_DE_TU_FOTO.png" alt="@SKILLZ_FFF">
-        <h2>APLICADO EXITOSAMENTE</h2>
     </div>
 </div>
 
@@ -137,6 +144,8 @@
     const brandSelect = document.getElementById("brand");
     const modelSelect = document.getElementById("model");
     const tbody = document.querySelector("#sensiTable tbody");
+    const progressContainer = document.getElementById("progressContainer");
+    const progressBar = document.getElementById("progressBar");
 
     function updateModels(){
         const brand = brandSelect.value;
@@ -150,39 +159,42 @@
     brandSelect.addEventListener("change",updateModels);
     updateModels();
 
-    function jitter(base, max=200){ return Math.min(200, Math.max(50, Math.round(base + Math.random()*5 - 2))); }
+    function jitter(base){ return Math.min(200, Math.max(50, Math.round(base + Math.random()*5 - 2))); }
 
     function generateSensitivity(){
-        const brand = brandSelect.value;
-        const model = modelSelect.value;
-        const sensiType = document.getElementById("sensitivity").value;
         const dpi = document.getElementById("dpi").value;
-        const presetName = `Preset ${tbody.children.length+1}`;
+        const sensiType = document.getElementById("sensitivity").value;
 
-        // Valores base según tipo
-        let base = {camera:90,general:100,red:85,scope:80,sniper:75};
-        if(sensiType==="Alta"){ for(let k in base) base[k]+=20; }
-        else if(sensiType==="Baja"){ for(let k in base) base[k]-=20; }
+        tbody.innerHTML = "";
+        progressContainer.style.display = "block";
+        progressBar.style.width = "0%";
+        let width = 0;
+        const interval = setInterval(() => {
+            if(width >= 100){
+                clearInterval(interval);
+                progressContainer.style.display = "none";
 
-        // Crear fila en tabla
-        const tr = document.createElement("tr");
-        tr.innerHTML=`
-            <td>${presetName}</td>
-            <td>${jitter(base.camera)}</td>
-            <td>${jitter(base.general)}</td>
-            <td>${jitter(base.red)}</td>
-            <td>${jitter(base.scope)}</td>
-            <td>${jitter(base.sniper)}</td>
-            <td>${dpi}</td>
-        `;
-        tbody.appendChild(tr);
-        tr.scrollIntoView({behavior:"smooth"});
-    }
+                let base = {camera:90,general:100,red:85,scope:80,sniper:75};
+                if(sensiType==="Alta"){ for(let k in base) base[k]+=20; }
+                else if(sensiType==="Baja"){ for(let k in base) base[k]-=20; }
 
-    const modal = document.getElementById("modal");
-    function applyAuxilio(){
-        modal.style.display="flex";
-        setTimeout(()=>{ modal.style.display="none"; },2000);
+                const tr = document.createElement("tr");
+                tr.innerHTML=`
+                    <td>Preset 1</td>
+                    <td>${jitter(base.camera)}</td>
+                    <td>${jitter(base.general)}</td>
+                    <td>${jitter(base.red)}</td>
+                    <td>${jitter(base.scope)}</td>
+                    <td>${jitter(base.sniper)}</td>
+                    <td>${dpi}</td>
+                `;
+                tbody.appendChild(tr);
+                tr.scrollIntoView({behavior:"smooth"});
+            } else {
+                width += 2;
+                progressBar.style.width = width + "%";
+            }
+        }, 20);
     }
 </script>
 </body>
