@@ -1,153 +1,189 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Sensibilidades - @skillz_fff</title>
-    <style>
-        /* Estilos generales */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1e1e1e;
-            color: white;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 90%;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #2c2c2c;
-            border-radius: 8px;
-        }
-        h1, h2 {
-            text-align: center;
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-        select, input[type="text"], input[type="file"], button {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #444;
-            color: white;
-        }
-        button {
-            cursor: pointer;
-            background-color: #ff5722;
-        }
-        button:hover {
-            background-color: #e64a19;
-        }
-        .output {
-            background-color: #333;
-            padding: 10px;
-            border-radius: 5px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-        .footer a {
-            color: #ff5722;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generador de Sensibilidades - @SKILLZ_FFF</title>
+<style>
+    body {margin:0; font-family: Arial, sans-serif; background:#0a0a0a; color:#fff;}
+    .container {max-width:900px; margin:20px auto; padding:20px; background:#1a1a1a; border-radius:12px; box-shadow: 0 0 20px #ff2e2e;}
+    h1, h2 {text-align:center; margin:10px 0;}
+    label {display:block; margin:10px 0 5px;}
+    select, input[type="text"], button {width:100%; padding:10px; margin:5px 0 15px; border:none; border-radius:8px; background:#222; color:#fff;}
+    button {cursor:pointer; background:#ff2e2e; box-shadow:0 0 8px #ff2e2e;}
+    button:hover {background:#ff1a1a; box-shadow:0 0 15px #ff2e2e;}
+    .output{background:#111; padding:15px; border-radius:8px; white-space:pre-wrap; min-height:150px; margin-top:15px;}
+    .footer{text-align:center; margin-top:20px; font-size:14px;}
+    .footer a{color:#ff2e2e; text-decoration:none;}
+    .footer a:hover{text-decoration:underline;}
+    /* Profile */
+    .profile-header {text-align:center; margin-bottom:20px; animation: fadeIn 1s ease-in-out;}
+    .profile-pic {width:120px; height:120px; border-radius:50%; border:3px solid #ff2e2e; box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;}
+    .profile-name {color:#ff2e2e; text-transform:uppercase; margin-top:10px; font-size:22px; letter-spacing:2px; text-shadow:0 0 5px #ff2e2e,0 0 10px #ff2e2e;}
+    @keyframes fadeIn {0% {opacity:0;} 100% {opacity:1;}}
+    /* Tabla moderna */
+    table {width:100%; border-collapse:collapse; margin-top:15px;}
+    th, td {padding:12px; text-align:center;}
+    th {background:#222; color:#ff2e2e; border-bottom:2px solid #ff2e2e;}
+    tr {background:#1a1a1a; transition: all 0.3s ease;}
+    tr:hover {box-shadow:0 0 10px #ff2e2e; transform: scale(1.02);}
+    /* AUXILIO */
+    .auxilio{background:#111; padding:15px; border-radius:8px; margin-top:20px;}
+    .switch-group{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;}
+    .switch{display:flex; align-items:center; gap:6px; cursor:pointer;}
+    .switch input{cursor:pointer;}
+    /* Modal */
+    #modal{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); justify-content:center; align-items:center; z-index:999;}
+    #modalContent{background:#1a1a1a; padding:30px; border-radius:12px; text-align:center; box-shadow:0 0 20px #ff2e2e;}
+    #modalContent img{width:150px; height:150px; border-radius:50%; box-shadow:0 0 15px #ff2e2e;}
+    #modalContent h2{color:#ff2e2e; margin:0; font-size:28px; text-shadow:0 0 5px #ff2e2e,0 0 10px #ff2e2e; animation: glow 1.5s infinite alternate;}
+    @keyframes glow {0% {text-shadow:0 0 5px #ff2e2e,0 0 10px #ff2e2e;} 100% {text-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;}}
+</style>
 </head>
 <body>
-
 <div class="container">
-    <h1>Generador de Sensibilidades</h1>
-    <h2>@skillz_fff</h2>
+    <!-- Foto de perfil y nombre -->
+    <div class="profile-header">
+        <img src="URL_DE_TU_FOTO.png" alt="@SKILLZ_FFF" class="profile-pic">
+        <h2 class="profile-name">@SKILLZ_FFF</h2>
+    </div>
 
-    <!-- Formulario de entrada -->
-    <label for="device">Selecciona tu dispositivo:</label>
-    <select id="device">
+    <h1>Generador de Sensibilidades</h1>
+
+    <!-- Selección de marca y modelo -->
+    <label for="brand">Marca:</label>
+    <select id="brand">
         <option value="Xiaomi">Xiaomi</option>
-        <option value="Samsung">Samsung</option>
         <option value="Huawei">Huawei</option>
+        <option value="Samsung">Samsung</option>
+        <option value="Tecno">Tecno</option>
+        <option value="ZTE">ZTE</option>
+        <option value="Motorola">Motorola</option>
+        <option value="Redmi">Redmi</option>
         <option value="iPhone">iPhone</option>
-        <!-- Agrega más dispositivos según sea necesario -->
     </select>
 
-    <label for="sensitivity">Selecciona la sensibilidad:</label>
+    <label for="model">Modelo:</label>
+    <select id="model"></select>
+
+    <label for="sensitivity">Tipo de Sensibilidad:</label>
     <select id="sensitivity">
         <option value="Alta">Alta</option>
         <option value="Media">Media</option>
         <option value="Baja">Baja</option>
     </select>
 
-    <label for="presetName">Nombre del preset:</label>
-    <input type="text" id="presetName" placeholder="Ejemplo: Headshot Mode">
+    <label for="dpi">DPI recomendado:</label>
+    <select id="dpi">
+        <option value="430">430</option>
+        <option value="650">650</option>
+        <option value="850">850</option>
+        <option value="333">333</option>
+    </select>
 
-    <label for="logo">Sube tu logo (opcional):</label>
-    <input type="file" id="logo" accept="image/*">
+    <button onclick="generateSensitivity()">GENERAR SENSIBILIDAD</button>
 
-    <button onclick="generateSensitivity()">Generar Sensibilidad</button>
+    <!-- Tabla de sensibilidades -->
+    <table id="sensiTable">
+        <thead>
+            <tr>
+                <th>Preset</th>
+                <th>Camera</th>
+                <th>General</th>
+                <th>Red Dot</th>
+                <th>Scope</th>
+                <th>Sniper</th>
+                <th>DPI</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 
-    <!-- Área de salida -->
-    <div class="output" id="outputArea"></div>
+    <!-- AUXILIO -->
+    <div class="auxilio">
+        <h3>AUXILIO</h3>
+        <div class="switch-group">
+            <label class="switch"><input type="checkbox" id="reduceLag"> Reducir lag</label>
+            <label class="switch"><input type="checkbox" id="increasePrecision"> Aumentar precisión</label>
+            <label class="switch"><input type="checkbox" id="inject"> Injertar</label>
+        </div>
+        <button onclick="applyAuxilio()">Aplicar</button>
+    </div>
+
+    <div class="footer">
+        Hecho con ❤️ por <a href="https://www.tiktok.com/@skillz_fff" target="_blank">@SKILLZ_FFF</a>
+    </div>
 </div>
 
-<div class="footer">
-    <p>Hecho con ❤️ por <a href="https://www.tiktok.com/@skillz_fff" target="_blank">@skillz_fff</a></p>
+<!-- Modal de confirmación -->
+<div id="modal">
+    <div id="modalContent">
+        <img src="URL_DE_TU_FOTO.png" alt="@SKILLZ_FFF">
+        <h2>APLICADO EXITOSAMENTE</h2>
+    </div>
 </div>
 
 <script>
-    function generateSensitivity() {
-        const device = document.getElementById('device').value;
-        const sensitivity = document.getElementById('sensitivity').value;
-        const presetName = document.getElementById('presetName').value || 'Preset';
-        const logoFile = document.getElementById('logo').files[0];
+    const modelsByBrand = {
+        Xiaomi:["Redmi Note 10","Mi 11","Mi 10T"],
+        Huawei:["P40","Mate 40","Nova 8"],
+        Samsung:["Galaxy S21","Galaxy A52","Galaxy Note 20"],
+        Tecno:["Camon 17","Spark 5"],
+        ZTE:["Axon 10","Blade V10"],
+        Motorola:["Moto G Power","Moto E"],
+        Redmi:["Redmi Note 9","Redmi 9A"],
+        iPhone:["iPhone 12","iPhone 13"]
+    };
+    const brandSelect = document.getElementById("brand");
+    const modelSelect = document.getElementById("model");
+    const tbody = document.querySelector("#sensiTable tbody");
 
-        // Lógica para generar la sensibilidad basada en el dispositivo y tipo
-        let sensitivityValues;
-        if (device === 'Xiaomi') {
-            sensitivityValues = sensitivity === 'Alta' ? 'Camera: 50, General: 45, Red Dot: 40, Scope: 35, Sniper: 30' :
-                                sensitivity === 'Media' ? 'Camera: 45, General: 40, Red Dot: 35, Scope: 30, Sniper: 25' :
-                                'Camera: 40, General: 35, Red Dot: 30, Scope: 25, Sniper: 20';
-        } else if (device === 'Samsung') {
-            sensitivityValues = sensitivity === 'Alta' ? 'Camera: 55, General: 50, Red Dot: 45, Scope: 40, Sniper: 35' :
-                                sensitivity === 'Media' ? 'Camera: 50, General: 45, Red Dot: 40, Scope: 35, Sniper: 30' :
-                                'Camera: 45, General: 40, Red Dot: 35, Scope: 30, Sniper: 25';
-        }
-        // Agrega más dispositivos según sea necesario
+    function updateModels(){
+        const brand = brandSelect.value;
+        modelSelect.innerHTML="";
+        modelsByBrand[brand].forEach(m=>{
+            const option = document.createElement("option");
+            option.value=m; option.textContent=m;
+            modelSelect.appendChild(option);
+        });
+    }
+    brandSelect.addEventListener("change",updateModels);
+    updateModels();
 
-        // Mostrar los resultados
-        const output = `
-            Preset: ${presetName}
-            Dispositivo: ${device}
-            Sensibilidad: ${sensitivity}
-            ${sensitivityValues}
+    function jitter(base, max=200){ return Math.min(200, Math.max(50, Math.round(base + Math.random()*5 - 2))); }
+
+    function generateSensitivity(){
+        const brand = brandSelect.value;
+        const model = modelSelect.value;
+        const sensiType = document.getElementById("sensitivity").value;
+        const dpi = document.getElementById("dpi").value;
+        const presetName = `Preset ${tbody.children.length+1}`;
+
+        // Valores base según tipo
+        let base = {camera:90,general:100,red:85,scope:80,sniper:75};
+        if(sensiType==="Alta"){ for(let k in base) base[k]+=20; }
+        else if(sensiType==="Baja"){ for(let k in base) base[k]-=20; }
+
+        // Crear fila en tabla
+        const tr = document.createElement("tr");
+        tr.innerHTML=`
+            <td>${presetName}</td>
+            <td>${jitter(base.camera)}</td>
+            <td>${jitter(base.general)}</td>
+            <td>${jitter(base.red)}</td>
+            <td>${jitter(base.scope)}</td>
+            <td>${jitter(base.sniper)}</td>
+            <td>${dpi}</td>
         `;
-        document.getElementById('outputArea').textContent = output;
+        tbody.appendChild(tr);
+        tr.scrollIntoView({behavior:"smooth"});
+    }
 
-        // Mostrar el logo si se ha subido
-        if (logoFile) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.src = e.target.result;
-                img.style.width = '100px';
-                img.style.height = '100px';
-                img.style.borderRadius = '50%';
-                img.style.marginTop = '20px';
-                document.getElementById('outputArea').appendChild(img);
-            };
-            reader.readAsDataURL(logoFile);
-        }
+    const modal = document.getElementById("modal");
+    function applyAuxilio(){
+        modal.style.display="flex";
+        setTimeout(()=>{ modal.style.display="none"; },2000);
     }
 </script>
-
 </body>
 </html>
