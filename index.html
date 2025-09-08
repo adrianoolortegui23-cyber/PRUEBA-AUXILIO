@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Skillz — Generador de Sensibilidad (Black & Red)</title>
+
+<!-- PWA manifest -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1b1b1b">
+
+<!-- Simple styles (negro + rojo) -->
+<style>
+  :root{
+    --bg:#0b0b0b;
+    --panel:#141414;
+    --muted:#bdbdbd;
+    --accent:#ff2b2b;
+    --glass: rgba(255,255,255,0.03);
+    --card-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    --radius: 14px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(180deg,var(--bg),#050505 70%);
+    color:#efefef;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:18px;
+  }
+  .container{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:18px;}
+  header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  h1{margin:0;font-size:1.4rem;color:var(--accent);letter-spacing:0.6px}
+  p.lead{margin:0;color:var(--muted);font-size:0.95rem}
+
+  /* layout */
+  .grid{display:grid;grid-template-columns:1fr 380px;gap:18px}
+  @media (max-width:900px){ .grid{grid-template-columns:1fr} }
+
+  .card{background:linear-gradient(180deg,var(--panel), #0f0f0f);border-radius:var(--radius); padding:16px; box-shadow:var(--card-shadow); border:1px solid rgba(255,255,255,0.03)}
+  .section-title{font-weight:600;margin:0 0 8px 0;color:#fff}
+  label.small{font-size:0.82rem;color:var(--muted)}
+
+  /* device list */
+  .device-list{display:flex;flex-wrap:wrap;gap:8px}
+  .device-btn{
+    background:transparent;border:1px solid rgba(255,255,255,0.05);padding:8px 12px;border-radius:10px;color:var(--muted);cursor:pointer;
+  }
+  .device-btn.active{background:linear-gradient(90deg,var(--accent),#ff7d7d);color:#0b0b0b;border:1px solid rgba(255,255,255,0.06);box-shadow:0 6px 20px rgba(255,43,43,0.12)}
+
+  /* controls */
+  .row{display:flex;gap:10px;align-items:center}
+  .col{flex:1}
+  input[type=range]{width:100%}
+  .muted{color:var(--muted);font-size:0.88rem}
+  .small-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:10px;color:var(--muted);cursor:pointer}
+
+  .big-btn{
+    display:inline-block;padding:12px 18px;border-radius:12px;background:var(--accent);color:#0b0b0b;border:none;cursor:pointer;font-weight:700;
+    box-shadow:0 10px 30px rgba(255,43,43,0.18);
+  }
+
+  /* result area */
+  .result-lines{display:flex;flex-direction:column;gap:8px}
+  .result-line{display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--glass);border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+  .result-label{color:var(--muted);font-weight:600}
+  .small{font-size:0.85rem}
+
+  footer{margin-top:12px;color:var(--muted);font-size:0.85rem;text-align:center}
+  .controls-row{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);cursor:pointer}
+  .danger{background:transparent;border:1px solid rgba(255,0,0,0.12);color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div>
+      <h1>Skillz — Sensitivity & DPI Generator</h1>
+      <p class="lead">Recomendaciones por dispositivo · Guarda presets · Exporta · PWA-ready</p>
+    </div>
+    <div class="row">
+      <button id="btnCopy" class="small-btn">📋 Copiar</button>
+      <button id="btnExport" class="small-btn">📦 Exportar</button>
+      <button id="btnSavePreset" class="small-btn">💾 Guardar</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <!-- Left: controls -->
+    <section class="card">
+      <h2 class="section-title">1 · Elige dispositivo / modelo</h2>
+      <div class="muted small">Selecciona tu marca y luego el modelo. Los DPI recomendados y presets se aplican automáticamente.</div>
+
+      <div style="margin-top:12px;">
+        <label class="small">Marca</label>
+        <div style="margin-top:8px" id="brandBtns" class="device-list"></div>
+      </div>
+
+      <div style="margin-top:12px;">
+        <label class="small">Modelos</label>
+        <div id="modelBtns" style="margin-top:8px" class="device-list"></div>
+      </div>
+
+      <hr style="margin:14px 0;border-color:rgba(255,255,255,0.03)">
+
+      <h3 class="section-title">2 · Opciones</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <label class="pill"><input type="checkbox" id="useGyro" /> Usar giroscopio</label>
+        <label class="pill"><input type="checkbox" id="controlRecoil" /> Control de recoil</label>
+      </div>
+      <div style="margin-top:12px" class="muted small">Selecciona tu estilo de juego:</div>
+      <div style="margin-top:8px" class="device-list">
+        <button class="device-btn" data-style="rusher">Rusher</button>
+        <button class="device-btn" data-style="balanced">Equilibrado</button>
+        <button class="device-btn" data-style="sniper">Precisión / Sniper</button>
+      </div>
+
+      <hr style="margin:14px 0;border-color:rgba(255,255,255,0.03)">
+
+      <h3 class="section-title">3 · Ajustes manuales</h3>
+      <div style="margin-bottom:10px">
+        <label class="small">DPI recomendado (puedes modificar)</label>
+        <div class="row" style="gap:12px;margin-top:8px">
+          <input id="dpiInput" type="number" min="100" max="4000" value="480" style="width:120px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff" />
+          <div class="col">
+            <label class="small">Sensibilidad general</label>
+            <input id="sensGen" type="range" min="0" max="100" value="50"/>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px" class="controls-row">
+        <button id="btnGenerate" class="big-btn">🎯 Generar sensibilidad</button>
+        <button id="btnRandom" class="pill">🔀 Aleatorio</button>
+        <button id="btnReset" class="pill danger">♻️ Reset</button>
+      </div>
+    </section>
+
+    <!-- Right: summary / results -->
+    <aside class="card">
+      <h2 class="section-title">Resultado & Recomendaciones</h2>
+      <div class="muted small">Valores calculados según DPI, dispositivo y estilo. Pulsa copiar para transferir fácilmente.</div>
+
+      <div style="margin-top:12px" class="result-lines" id="results">
+        <!-- result items inserted here -->
+      </div>
+
+      <hr style="margin:12px 0;border-color:rgba(255,255,255,0.03)">
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <input id="presetName" placeholder="Nombre del preset" style="flex:1;padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff" />
+        <button id="loadPresetBtn" class="small-btn">⬇️ Cargar</button>
+        <button id="deletePresetBtn" class="small-btn">🗑️ Borrar</button>
+      </div>
+
+      <div style="margin-top:12px">
+        <label class="small">Tus presets guardados</label>
+        <select id="presetsSelect" style="width:100%;margin-top:8px;padding:8px;border-radius:8px;background:#0b0b0b;border:1px solid rgba(255,255,255,0.04);color:#fff"></select>
+      </div>
+
+      <hr style="margin:12px 0;border-color:rgba(255,255,255,0.03)">
+
+      <div style="display:flex;gap:8px">
+        <label class="small-btn" style="cursor:pointer">
+          📥 Importar
+          <input id="importFile" type="file" accept="application/json" style="display:none" />
+        </label>
+        <button id="exportAll" class="small-btn">📤 Exportar todos</button>
+      </div>
+
+      <footer>
+        Hecho con ❤ por Skillz · PWA-ready
+      </footer>
+    </aside>
+  </main>
+</div>
+
+<!-- Script: lógica -->
+<script>
+/* ---------------- DEVICE DATABASE ----------------
+   Lista de marcas y modelos con DPI recomendados y notas.
+   Puedes ampliar con más modelos. */
+const DEVICE_DB = {
+  Samsung: [
+    { id:'s21', name:'Galaxy S21 / S22', dpi:480 },
+    { id:'s20', name:'Galaxy S20', dpi:480 },
+    { id:'a54', name:'Galaxy A54', dpi:420 }
+  ],
+  Apple: [
+    { id:'iphone13', name:'iPhone 13/14', dpi:450 },
+    { id:'iphoneSE', name:'iPhone SE', dpi:400 }
+  ],
+  Xiaomi: [
+    { id:'redmi_note', name:'Redmi Note (serie)', dpi:600 },
+    { id:'poco', name:'Poco / Redmi', dpi:600 }
+  ],
+  OnePlus: [
+    { id:'oneplus8', name:'OnePlus (serie)', dpi:520 }
+  ],
+  ASUS: [
+    { id:'rog', name:'ROG Phone (gaming)', dpi:800 }
+  ],
+  Tablet: [
+    { id:'ipad', name:'iPad (tablet)', dpi:300 },
+    { id:'android_tab', name:'Android Tablet', dpi:320 }
+  ]
+};
+
+/* ---------------- UTIL & STATE ---------------- */
+const state = {
+  brand: null,
+  model: null,
+  dpi: 480,
+  style: 'balanced',
+  useGyro: false,
+  controlRecoil: false,
+  sensGen: 50,
+  currentPresetName: ''
+};
+
+function $(id){return document.getElementById(id)}
+
+/* ---------------- RENDER BRAND & MODELS ---------------- */
+function renderBrands(){
+  const container = $('brandBtns');
+  container.innerHTML = '';
+  Object.keys(DEVICE_DB).forEach(brand=>{
+    const btn = document.createElement('button');
+    btn.className = 'device-btn';
+    btn.textContent = brand;
+    btn.onclick = ()=>{ selectBrand(brand); };
+    container.appendChild(btn);
+  });
+}
+
+function selectBrand(brand){
+  state.brand = brand;
+  // highlight
+  document.querySelectorAll('#brandBtns .device-btn').forEach(b=>b.classList.toggle('active', b.textContent===brand));
+  // render models
+  const box = $('modelBtns');
+  box.innerHTML='';
+  DEVICE_DB[brand].forEach(m=>{
+    const b = document.createElement('button');
+    b.className='device-btn';
+    b.textContent = m.name;
+    b.onclick = ()=> selectModel(m);
+    box.appendChild(b);
+  });
+}
+
+function selectModel(model){
+  state.model = model;
+  // highlight
+  document.querySelectorAll('#modelBtns .device-btn').forEach(b=>b.classList.toggle('active', b.textContent===model.name));
+  // apply dpi recommended
+  state.dpi = model.dpi;
+  $('dpiInput').value = state.dpi;
+  // auto generate
+  generateSensitivity();
+}
+
+/* ---------------- STYLE BUTTONS ---------------- */
+document.querySelectorAll('[data-style]').forEach(b=>{
+  b.addEventListener('click', ()=> {
+    document.querySelectorAll('[data-style]').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    state.style = b.getAttribute('data-style');
+    generateSensitivity();
+  });
+});
+
+/* ---------------- CALCULATION LOGIC ----------------
+   Approach:
+   - Use baseSensitivity = K / DPI  (K chosen to map reasonable 0-100)
+   - Apply multipliers based on style, gyro and recoil control.
+   - Derive other sight sensitivities with offsets/coherence.
+*/
+function calcSensitivities(dpi, style, gyro, recoil, sensGenOverride){
+  // base constant: choose to map DPI~480 to general ~50
+  const K = 24000; // tuning constant
+  let base = K / (dpi || 480);
+  // normalize to 0-100-ish
+  base = Math.max(6, Math.min(95, Math.round(base)));
+
+  // style adjustments
+  let styleOffset = 0;
+  if(style==='rusher') styleOffset = 8;
+  if(style==='sniper') styleOffset = -6;
+  if(style==='balanced') styleOffset = 0;
+
+  // gyro & recoil influence
+  let gyroAdj = gyro ? -4 : 0;     // gyro -> lower base sens
+  let recoilAdj = recoil ? -2 : 0; // recoil control -> lower slightly
+
+  // manual general override
+  let general = sensGenOverride !== undefined ? Number(sensGenOverride) : base + styleOffset + gyroAdj + recoilAdj;
+  general = Math.round(Math.max(1, Math.min(100, general)));
+
+  // derived sights
+  let redDot = Math.round(Math.max(1, Math.min(100, general - 2 + (style==='rusher' ? 3:0))));
+  let scope2x = Math.round(Math.max(1, Math.min(100, redDot - 3 + (style==='sniper' ? 4:0))));
+  let scope4x = Math.round(Math.max(1, Math.min(100, scope2x - 2)));
+  let sniper = Math.round(Math.max(1, Math.min(100, general - 8 + (style==='sniper'?10:0))));
+  let freeLook = Math.round(Math.max(1, Math.min(100, general + 6)));
+
+  return { general, redDot, scope2x, scope4x, sniper, freeLook };
+}
+
+/* ---------------- UI: results rendering ---------------- */
+function renderResults(values){
+  const root = $('results');
+  root.innerHTML = '';
+  const lines = [
+    {k:'general', label:'General'},
+    {k:'redDot', label:'Punto rojo'},
+    {k:'scope2x', label:'Mira 2x'},
+    {k:'scope4x', label:'Mira 4x'},
+    {k:'sniper', label:'Sniper / AWM'},
+    {k:'freeLook', label:'Free Look'}
+  ];
+  lines.forEach(l=>{
+    const el = document.createElement('div');
+    el.className = 'result-line';
+    el.innerHTML = `<div>
+                      <div class="result-label">${l.label}</div>
+                      <div class="muted small">(${l.k})</div>
+                    </div>
+                    <div style="text-align:right">
+                      <div style="font-size:1.2rem;font-weight:700">${values[l.k]}</div>
+                      <div class="muted small">DPI: ${state.dpi}</div>
+                    </div>`;
+    root.appendChild(el);
+  });
+}
+
+/* ---------------- MAIN generate flow ---------------- */
+function generateSensitivity(){
+  state.dpi = Number($('dpiInput').value) || state.dpi || 480;
+  state.useGyro = $('useGyro').checked;
+  state.controlRecoil = $('controlRecoil').checked;
+  state.sensGen = Number($('sensGen').value) || undefined;
+  const vals = calcSensitivities(state.dpi, state.style, state.useGyro, state.controlRecoil, state.sensGen);
+  renderResults(vals);
+  state.lastGenerated = vals;
+}
+
+/* ---------------- Buttons & actions ---------------- */
+$('btnGenerate').addEventListener('click', generateSensitivity);
+
+$('btnRandom').addEventListener('click', ()=>{
+  // random DPI among common values
+  const arr = [360,400,480,520,600,720];
+  $('dpiInput').value = arr[Math.floor(Math.random()*arr.length)];
+  $('sensGen').value = (30 + Math.floor(Math.random()*50));
+  generateSensitivity();
+});
+
+$('btnReset').addEventListener('click', ()=>{
+  state.brand = null; state.model = null; state.dpi = 480; state.useGyro=false; state.controlRecoil=false; state.style='balanced';
+  $('dpiInput').value = 480; $('sensGen').value = 50; $('useGyro').checked=false; $('controlRecoil').checked=false;
+  document.querySelectorAll('#brandBtns .device-btn, #modelBtns .device-btn, [data-style]').forEach(x=>x.classList.remove('active'));
+  generateSensitivity();
+});
+
+/* copy & export */
+$('btnCopy').addEventListener('click', ()=>{
+  if(!state.lastGenerated) return alert('Genera primero la sensibilidad.');
+  const vals = state.lastGenerated;
+  const text = `Sensibilidad Skillz\nDPI: ${state.dpi}\nGeneral: ${vals.general}\nPunto rojo: ${vals.redDot}\n2x: ${vals.scope2x}\n4x: ${vals.scope4x}\nSniper: ${vals.sniper}\nFreeLook: ${vals.freeLook}`;
+  navigator.clipboard.writeText(text).then(()=> alert('Copiado al portapapeles.'));
+});
+
+$('btnExport').addEventListener('click', ()=>{
+  const exportName = `skillz-preset-${(state.currentPresetName||'preset')}-${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.json`;
+  const payload = {
+    meta:{
+      brand: state.brand,
+      model: state.model,
+      dpi: state.dpi,
+      style: state.style,
+      gyro: state.useGyro,
+      recoil: state.controlRecoil
+    },
+    values: state.lastGenerated || {}
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=exportName; a.click();
+  URL.revokeObjectURL(url);
+});
+
+/* Presets save/load */
+const LS_KEY = 'skillz_user_presets_v1';
+function loadAllPresets(){ try{ return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }catch{return {}} }
+function saveAllPresets(obj){ localStorage.setItem(LS_KEY, JSON.stringify(obj)); fillPresetsSelect(); }
+
+function fillPresetsSelect(){
+  const sel = $('presetsSelect');
+  sel.innerHTML = '<option value="">-- seleccionar --</option>';
+  const all = loadAllPresets();
+  Object.keys(all).forEach(k=>{
+    const opt = document.createElement('option'); opt.value = k; opt.textContent = k;
+    sel.appendChild(opt);
+  });
+}
+
+$('btnSavePreset').addEventListener('click', ()=>{
+  if(!state.lastGenerated) return alert('Genera una configuración primero.');
+  const name = $('presetName').value.trim() || prompt('Nombre para el preset:');
+  if(!name) return;
+  const all = loadAllPresets();
+  all[name] = {
+    meta:{
+      brand: state.brand ? state.brand : null,
+      model: state.model ? state.model.name || state.model : null,
+      dpi: state.dpi,
+      style: state.style,
+      gyro: state.useGyro,
+      recoil: state.controlRecoil,
+      savedAt: new Date().toISOString()
+    },
+    values: state.lastGenerated
+  };
+  saveAllPresets(all);
+  $('presetName').value = '';
+  alert('Preset guardado.');
+});
+
+$('loadPresetBtn').addEventListener('click', ()=>{
+  const sel = $('presetsSelect');
+  const key = sel.value;
+  if(!key) return alert('Selecciona un preset.');
+  const all = loadAllPresets();
+  const p = all[key];
+  if(!p) return;
+  // apply
+  if(p.meta && p.meta.dpi) $('dpiInput').value = p.meta.dpi;
+  if(p.meta && p.meta.style) {
+    state.style = p.meta.style;
+    // visual
+    document.querySelectorAll('[data-style]').forEach(x=>x.classList.toggle('active', x.getAttribute('data-style')===state.style));
+  }
+  if(p.meta) { $('useGyro').checked = !!p.meta.gyro; $('controlRecoil').checked = !!p.meta.recoil; }
+  generateSensitivity();
+  alert('Preset cargado.');
+});
+
+$('deletePresetBtn').addEventListener('click', ()=>{
+  const sel = $('presetsSelect'); const key = sel.value; if(!key) return alert('Selecciona un preset.');
+  const all = loadAllPresets(); delete all[key]; saveAllPresets(all); alert('Preset eliminado.');
+});
+
+$('exportAll').addEventListener('click', ()=>{
+  const all = loadAllPresets();
+  if(Object.keys(all).length===0) return alert('No hay presets guardados.');
+  const blob = new Blob([JSON.stringify(all,null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='skillz-presets-all.json'; a.click(); URL.revokeObjectURL(url);
+});
+
+/* import file */
+$('importFile').addEventListener('change', (ev)=>{
+  const f = ev.target.files[0]; if(!f) return;
+  const reader = new FileReader(); reader.onload = (e)=>{
+    try{
+      const obj = JSON.parse(e.target.result);
+      const all = loadAllPresets();
+      Object.assign(all, obj);
+      saveAllPresets(all);
+      alert('Importado con éxito.');
+    }catch(err){ alert('Archivo inválido.'); }
+  };
+  reader.readAsText(f);
+});
+
+/* init */
+(function init(){
+  renderBrands();
+  fillPresetsSelect();
+  // set defaults
+  $('dpiInput').value = state.dpi;
+  generateSensitivity();
+  // register clicks for brand buttons highlight (initial)
+  document.querySelectorAll('#brandBtns .device-btn').forEach(b=>b.addEventListener('click', ()=>{ document.querySelectorAll('#brandBtns .device-btn').forEach(x=>x.classList.toggle('active', x===b)) }));
+})();
+
+/* Register service worker (also safe-guard) */
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('service-worker.js').then(()=>console.log('sw ok')).catch(e=>console.warn('sw failed', e));
+}
+</script>
+</body>
+</html>
