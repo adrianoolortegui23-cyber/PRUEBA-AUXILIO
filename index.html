@@ -1,179 +1,153 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Generador de Sensibilidades COMPLETO</title>
-<style>
-:root{--bg:#0b0b0b;--card:#111;--accent:#ffcc00;--muted:#9aa0a6;--primary:#fff}
-*{box-sizing:border-box;font-family:Inter,system-ui,Arial,sans-serif}
-body{margin:0;padding:24px;background:linear-gradient(180deg,#050505,var(--bg));color:var(--primary)}
-.container{max-width:1000px;margin:0 auto}
-header{display:flex;gap:16px;align-items:center}
-header img.logo{width:64px;height:64px;object-fit:contain;border-radius:12px;background:#111;padding:8px;transition:0.3s all}
-header h1{font-size:22px;margin:0}
-.card{background:var(--card);padding:20px;border-radius:14px;margin-top:18px;box-shadow:0 6px 18px rgba(0,0,0,.6);transition:0.3s all}
-label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-input[type=text],select{width:100%;padding:10px;border-radius:8px;border:1px solid #222;background:#0a0a0a;color:#fff}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-button{background:var(--accent);border:none;padding:10px 12px;border-radius:8px;cursor:pointer;font-weight:600;transition:0.2s}
-button:hover{transform:scale(1.05);box-shadow:0 0 12px var(--accent)}
-.preview{display:flex;gap:12px;align-items:center;margin-top:12px}
-.logo-preview{width:72px;height:72px;border-radius:50%;background:#070707;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.6)}
-.output{margin-top:14px;background:#060606;border-radius:10px;padding:12px;font-family:monospace;font-size:14px;white-space:pre-wrap;min-height:120px;transition:0.3s all}
-.device-list{display:flex;gap:8px;flex-wrap:wrap}
-.device-btn{background:#0d0d0d;padding:8px 10px;border-radius:8px;border:1px solid #222;cursor:pointer;transition:0.2s}
-.device-btn:hover{border-color:var(--accent);}
-.device-btn.active{border-color:var(--accent);box-shadow:0 0 8px var(--accent);}
-.auxilio{margin-top:20px;padding:18px;border-radius:12px;background:#111;box-shadow:0 4px 12px rgba(0,0,0,.5)}
-.switch-group{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-.switch{display:flex;align-items:center;gap:6px;color:var(--muted);cursor:pointer}
-.switch input{cursor:pointer}
-.about-me{margin-top:24px;text-align:center;color:var(--muted);font-size:13px}
-.about-me a{color:var(--accent);text-decoration:none;transition:0.2s}
-.about-me a:hover{color:#fff}
-@media(max-width:640px){.row{grid-template-columns:1fr}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Sensibilidades - @skillz_fff</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #2c2c2c;
+            border-radius: 8px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        select, input[type="text"], input[type="file"], button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #444;
+            color: white;
+        }
+        button {
+            cursor: pointer;
+            background-color: #ff5722;
+        }
+        button:hover {
+            background-color: #e64a19;
+        }
+        .output {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #ff5722;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
+
 <div class="container">
-<header>
-<img class="logo" id="brandLogo" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='100%' height='100%' fill='%23090909'/><text x='50%' y='55%' font-size='18' fill='%23fff' text-anchor='middle' font-family='Arial' font-weight='700'>LOGO</text></svg>" alt="logo">
-<div>
-<h1>Generador de Sensibilidades COMPLETO</h1>
-<div style="color:var(--muted);font-size:13px">Personaliza tu marca y genera presets calibrados</div>
-</div>
-</header>
+    <h1>Generador de Sensibilidades</h1>
+    <h2>@skillz_fff</h2>
 
-<!-- Marca y logo -->
-<div class="card">
-<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
-<div style="flex:1;min-width:220px"><label>Nombre de marca</label><input id="brandName" type="text" value="MiMarca"></div>
-<div style="min-width:220px"><label>Color de acento (hex)</label><input id="accentColor" type="text" value="#ffcc00"></div>
-<div style="min-width:220px"><label>Subir logo (PNG/JPG)</label><input id="logoFile" type="file" accept="image/*"></div>
-</div>
-<div class="preview">
-<div class="logo-preview" id="logoWrap">
-<img id="logoImg" src="" alt="preview" style="width:100%;height:100%;object-fit:contain;display:none">
-<div id="logoPlaceholder" style="color:var(--muted);font-size:12px">Sin logo</div>
-</div>
-<div style="flex:1"><div style="font-weight:700" id="brandPreview">MiMarca</div><div style="color:var(--muted);font-size:13px">Previsualización de marca</div></div>
-<div style="text-align:right"><button id="applyBrand">Aplicar</button></div>
-</div>
-</div>
+    <!-- Formulario de entrada -->
+    <label for="device">Selecciona tu dispositivo:</label>
+    <select id="device">
+        <option value="Xiaomi">Xiaomi</option>
+        <option value="Samsung">Samsung</option>
+        <option value="Huawei">Huawei</option>
+        <option value="iPhone">iPhone</option>
+        <!-- Agrega más dispositivos según sea necesario -->
+    </select>
 
-<!-- Dispositivos y sensibilidad -->
-<div class="card">
-<label>Selecciona dispositivo:</label>
-<div class="device-list" id="deviceList"></div>
-<div class="row" style="margin-top:12px">
-<div><label>Tipo de sensibilidad</label>
-<select id="sensiType"><option>Media</option><option>Alta</option><option>Baja</option></select></div>
-<div><label>Nombre del preset</label><input id="presetName" type="text" value="Preset 1"></div>
-</div>
-<div class="controls">
-<button id="generate">Generar</button>
-<button id="copyAll">Copiar</button>
-<button id="downloadTxt">Descargar .txt</button>
-<button id="downloadZip">Descargar ZIP</button>
-</div>
-<div class="output" id="outputArea">Aquí aparecerán las sensibilidades generadas...</div>
+    <label for="sensitivity">Selecciona la sensibilidad:</label>
+    <select id="sensitivity">
+        <option value="Alta">Alta</option>
+        <option value="Media">Media</option>
+        <option value="Baja">Baja</option>
+    </select>
+
+    <label for="presetName">Nombre del preset:</label>
+    <input type="text" id="presetName" placeholder="Ejemplo: Headshot Mode">
+
+    <label for="logo">Sube tu logo (opcional):</label>
+    <input type="file" id="logo" accept="image/*">
+
+    <button onclick="generateSensitivity()">Generar Sensibilidad</button>
+
+    <!-- Área de salida -->
+    <div class="output" id="outputArea"></div>
 </div>
 
-<!-- AUXILIO -->
-<div class="auxilio">
-<h3>AUXILIO</h3>
-<div>Opciones de calibración avanzada:</div>
-<div class="switch-group">
-<label class="switch"><input type="checkbox" id="reduceLag"> Reducir lag</label>
-<label class="switch"><input type="checkbox" id="increasePrecision"> Aumentar precisión</label>
-<label class="switch"><input type="checkbox" id="inject"> Injertar</label>
-</div>
+<div class="footer">
+    <p>Hecho con ❤️ por <a href="https://www.tiktok.com/@skillz_fff" target="_blank">@skillz_fff</a></p>
 </div>
 
-<!-- Acerca de mí -->
-<div class="about-me">
-Hecho por <strong>@skillz_fff</strong> — Sígueme en TikTok: 
-<a href="https://www.tiktok.com/@skillz_fff" target="_blank">@skillz_fff</a>
-</div>
-
-<footer style="margin-top:18px;color:var(--muted);font-size:13px">Generador COMPLETO con AUXILIO</footer>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
 <script>
-// Base presets por dispositivo
-const basePresets={
-"Xiaomi/Android":{camera:44,general:46,sight:37,red:30,sniper:12},
-"Samsung/Android":{camera:46,general:48,sight:39,red:31,sniper:12},
-"iPhone/IOS":{camera:48,general:52,sight:42,red:34,sniper:14},
-"POCO/Android":{camera:43,general:45,sight:36,red:29,sniper:11},
-"Huawei/Android":{camera:45,general:47,sight:38,red:31,sniper:12},
-"OnePlus/Android":{camera:47,general:50,sight:41,red:33,sniper:13},
-"PC/Default":{camera:45,general:50,sight:40,red:32,sniper:13}
-};
+    function generateSensitivity() {
+        const device = document.getElementById('device').value;
+        const sensitivity = document.getElementById('sensitivity').value;
+        const presetName = document.getElementById('presetName').value || 'Preset';
+        const logoFile = document.getElementById('logo').files[0];
 
-// UI Elements
-const deviceListDiv=document.getElementById('deviceList');
-const brandName=document.getElementById('brandName');
-const accentColor=document.getElementById('accentColor');
-const logoFile=document.getElementById('logoFile');
-const logoImg=document.getElementById('logoImg');
-const logoPlaceholder=document.getElementById('logoPlaceholder');
-const brandPreview=document.getElementById('brandPreview');
-const brandLogoEl=document.getElementById('brandLogo');
-const sensiType=document.getElementById('sensiType');
-const outputArea=document.getElementById('outputArea');
-let selectedDevice=null;
+        // Lógica para generar la sensibilidad basada en el dispositivo y tipo
+        let sensitivityValues;
+        if (device === 'Xiaomi') {
+            sensitivityValues = sensitivity === 'Alta' ? 'Camera: 50, General: 45, Red Dot: 40, Scope: 35, Sniper: 30' :
+                                sensitivity === 'Media' ? 'Camera: 45, General: 40, Red Dot: 35, Scope: 30, Sniper: 25' :
+                                'Camera: 40, General: 35, Red Dot: 30, Scope: 25, Sniper: 20';
+        } else if (device === 'Samsung') {
+            sensitivityValues = sensitivity === 'Alta' ? 'Camera: 55, General: 50, Red Dot: 45, Scope: 40, Sniper: 35' :
+                                sensitivity === 'Media' ? 'Camera: 50, General: 45, Red Dot: 40, Scope: 35, Sniper: 30' :
+                                'Camera: 45, General: 40, Red Dot: 35, Scope: 30, Sniper: 25';
+        }
+        // Agrega más dispositivos según sea necesario
 
-// Generar lista de dispositivos
-Object.keys(basePresets).forEach(d=>{
- const btn=document.createElement('button');
- btn.textContent=d; btn.className='device-btn';
- btn.onclick=()=>{selectDevice(d)};
- deviceListDiv.appendChild(btn);
-});
-function selectDevice(name){
- selectedDevice=name;
- Array.from(document.getElementsByClassName('device-btn')).forEach(b=>b.classList.remove('active'));
- Array.from(document.getElementsByClassName('device-btn')).find(b=>b.textContent===name).classList.add('active');
-}
+        // Mostrar los resultados
+        const output = `
+            Preset: ${presetName}
+            Dispositivo: ${device}
+            Sensibilidad: ${sensitivity}
+            ${sensitivityValues}
+        `;
+        document.getElementById('outputArea').textContent = output;
 
-// Logo y marca
-logoFile.addEventListener('change',e=>{
- const f=e.target.files[0]; if(!f)return;
- const reader=new FileReader();
- reader.onload=()=>{logoImg.src=reader.result; logoImg.style.display='block'; logoPlaceholder.style.display='none'; brandLogoEl.src=reader.result;};
- reader.readAsDataURL(f);
-});
-document.getElementById('applyBrand').addEventListener('click',()=>{
- brandPreview.textContent=brandName.value||'MiMarca';
- document.documentElement.style.setProperty('--accent',accentColor.value||'#ffcc00');
-});
+        // Mostrar el logo si se ha subido
+        if (logoFile) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.src = e.target.result;
+                img.style.width = '100px';
+                img.style.height = '100px';
+                img.style.borderRadius = '50%';
+                img.style.marginTop = '20px';
+                document.getElementById('outputArea').appendChild(img);
+            };
+            reader.readAsDataURL(logoFile);
+        }
+    }
+</script>
 
-// Auxilio options
-const reduceLag=document.getElementById('reduceLag');
-const increasePrecision=document.getElementById('increasePrecision');
-const inject=document.getElementById('inject');
-
-// Generar sensibilidades
-function jitter(base,spread=3){return Math.max(0,Math.round((base+(Math.random()*2-1)*spread)*100)/100);}
-function adjustSensi(type,vals){
- if(type==='Alta'){for(let k in vals)vals[k]=Math.min(100,vals[k]+5);}
- else if(type==='Baja'){for(let k in vals)vals[k]=Math.max(0,vals[k]-5);}
-}
-function applyAuxilio(vals){
- if(reduceLag.checked){for(let k in vals)vals[k]=Math.max(0,vals[k]-3);}
- if(increasePrecision.checked){for(let k in vals)vals[k]=Math.min(100,vals[k]+3);}
-}
-function buildText(name,device,vals){
- return `${name} - ${device}\nCamera: ${vals.camera}\nGeneral: ${vals.general}\nRed Dot: ${vals.red}\nScope: ${vals.sight}\nSniper: ${vals.sniper}\n`;
-}
-
-document.getElementById('generate').addEventListener('click',()=>{
- const presetName=document.getElementById('presetName').value||'Preset';
- const type=sensiType.value;
- const device=selectedDevice||Object.keys(basePresets)[Math.floor(Math.random()*Object.keys(basePresets).length)];
- const base=basePresets[device];
- const vals={camera:jitter(base.camera,4),general:jitter(base.general,4),sight:jitter(base.sight,3),red:jitter(base.red,3),sniper
+</body>
+</html>
